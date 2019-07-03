@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://kit.fontawesome.com/7b1798d8eb.js" async defer></script>
+    <link rel="stylesheet" href="assets/styles/normalize.css">
+    <link href="https://fonts.googleapis.com/css?family=Karla|Montserrat|Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/styles/styles2.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+</head>
+
+<body>
+    <div class="hero-wrapper">
+        <h1>Giphy App</h1>
+    </div>
+    <div class='main-wrapper'>
+        <div class="button-wrapper"><br>
+            <form><input type="text" class="gif-input" value="Enter GIF Here" id="searchTerm" onfocus="this.value = ''"></input><br><input class="button1" type="submit" value="Get some GIFs!" id="searchButton"></input>
+            </form>
+        </div>
+        <div class='gif-wrapper' id="gifArea">
+            <!-- <div class='letter'>
+                A
+            </div>
+            <div class='letter'>
+                B
+            </div>
+            <div class='letter'>
+                C
+            </div>
+            <div class='letter'>
+                D
+            </div>
+            <div class='letter'>
+                A
+            </div>
+            <div class='letter'>
+                B
+            </div>
+            <div class='letter'>
+                C
+            </div>
+            <div class='letter'>
+                D
+            </div> -->
+        </div>
+
+    </div>
+    <div class="footer-wrapper">
+        <p>Footer item </p>
+    </div>
+
+    <script type="text/javascript">
+        $("#searchButton").on("click", function(event) {
+
+            // Preventing the submit button from trying to submit the form
+            // We're optionally using a form so the user may hit Enter to search instead of clicking the button
+            event.preventDefault();
+
+            // Here we grab the text from the input box
+            var searchTerm = $("#searchTerm").val();
+
+            console.log(searchTerm);
+
+            // var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=cats";
+
+            var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=dc6zaTOxFJmzC&limit=9";
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function(response) {
+                console.log(response.data)
+                response.data.forEach(element => {
+                    $("#gifArea").prepend("<div class='letter'><img src='" + element.images.fixed_width.url + "'>" + "</div><div></div>");
+                });
+
+            });
+
+            $("#searchTerm").val("");
+
+        });
+    </script>
+</body>
+
+</html>

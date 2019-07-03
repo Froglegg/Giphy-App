@@ -1,0 +1,159 @@
+                        .hero-wrapper {
+                            display: grid;
+                            grid-template-columns: 1fr;
+                            grid-template-rows: 1fr;
+                            grid-row-gap: 1px;
+                            grid-column-gap: 1px;
+                            background-color: rgb(51, 51, 51);
+                        }
+                        
+                        .hero-wrapper h1 {
+                            /* background-color: #0069b3; */
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            padding: 30px;
+                            font-size: 68px;
+                            line-height: 1;
+                            color: rgba(6, 155, 255, 0.979);
+                            font-family: montserrat;
+                            font-weight: 300;
+                            animation: 1s ease-out 0s 1 slideInFromLeft;
+                        }
+                        
+                        .main-wrapper {
+                            display: grid;
+                            width: 80%;
+                            justify-content: center;
+                            align-items: center;
+                            grid-template-columns: 1fr;
+                            grid-template-rows: 1fr;
+                            margin: auto;
+                            background-color: green;
+                        }
+                        
+                        .button-wrapper {
+                            display: grid;
+                            grid-template-columns: 1fr;
+                            grid-template-rows: 1fr;
+                            grid-row-gap: 1px;
+                            grid-column-gap: 1px;
+                        }
+                        
+                        .button-wrapper>input {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            vertical-align: middle;
+                            line-height: 1em;
+                        }
+                        
+                        .gif-wrapper {
+                            margin-top: 5vh;
+                            display: grid;
+                            grid-template-columns: 1fr 1fr 1fr;
+                            grid-template-rows: 1fr 1fr;
+                            grid-row-gap: 1px;
+                            grid-column-gap: 1px;
+                            background-color: black;
+                            margin-bottom: 5vh;
+                        }
+                        
+                        .footer-wrapper {
+                            display: grid;
+                            grid-template-columns: 1fr;
+                            grid-template-rows: 1fr;
+                            grid-row-gap: 1px;
+                            grid-column-gap: 1px;
+                            background-color: rgb(51, 51, 51);
+                        }
+                        
+                        .footer-wrapper p {
+                            /* background-color: #0069b3; */
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            color: rgba(6, 155, 255, 0.979);
+                            font-weight: 300;
+                        }
+                        
+                        .letter {
+                            background-color: #0069b3;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            padding: 50px;
+                            font-size: 70px;
+                            color: white;
+                            line-height: 1;
+                            font-weight: 200;
+                            cursor: pointer;
+                            transition: all .3s ease;
+                        }
+                        
+                        p {
+                            font-family: 'karla', sans-serif;
+                            font-size: 16px;
+                            line-height: 1.4;
+                            letter-spacing: 0.1em;
+                        }
+                        
+                        @keyframes slideInFromLeft {
+                            0% {
+                                transform: translateX(-100%);
+                            }
+                            100% {
+                                transform: translateX(0);
+                            }
+                        }
+                        
+                        @keyframes slideInFromRight {
+                            0% {
+                                transform: translateX(100%);
+                            }
+                            100% {
+                                transform: translateX(0);
+                            }
+                        }
+                        /* buttons n' stuff */
+                        
+                        input.gif-input {
+                            margin: auto;
+                            width: 33%;
+                            display: flex;
+                            text-align: center;
+                            font-family: 'karla', sans-serif;
+                            font-size: 16px;
+                            line-height: 1.5;
+                        }
+                        
+                        input.button1 {
+                            margin: auto!important;
+                            display: flex;
+                            padding: 0.65em 1.5em;
+                            border: 0.1em solid #FFFFFF;
+                            margin: 0 0.3em 0.3em 0;
+                            border-radius: 0.12em;
+                            box-sizing: border-box;
+                            text-decoration: none;
+                            font-family: 'poppins', sans-serif;
+                            font-weight: 600;
+                            font-size: 18px;
+                            color: rgba(0, 66, 110, 0.979);
+                            text-align: center;
+                            transition: all 0.2s;
+                            cursor: pointer;
+                            animation: 1s ease-out 0s 1 slideInFromRight;
+                        }
+                        
+                        input.button1:hover {
+                            color: rgba(8, 139, 226, 0.979);
+                            background-color: #FFFFFF;
+                        }
+                        
+                        @media all and (max-width:30em) {
+                            input.button1 {
+                                display: block;
+                                margin: 0.4em auto;
+                            }
+                        }
