@@ -28,6 +28,8 @@
         <div class="button-wrapper"><br>
             <form><input type="text" class="gif-input" value="Enter GIF Here" id="searchTerm" onfocus="this.value = ''"></input><br><input class="button1" type="submit" value="Get some GIFs!" id="searchButton"></input>
             </form>
+            <br>
+            <div id="buttons-view"></div>
         </div>
         <div class='gif-wrapper' id="gifArea">
             <!-- <div class='letter'>
@@ -62,6 +64,9 @@
     </div>
 
     <script type="text/javascript">
+
+    var gifList = [];
+
         $("#searchButton").on("click", function(event) {
 
             // Preventing the submit button from trying to submit the form
@@ -71,9 +76,7 @@
             // Here we grab the text from the input box
             var searchTerm = $("#searchTerm").val();
 
-            console.log(searchTerm);
-
-            // var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=cats";
+            console.log("search term");
 
             var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=dc6zaTOxFJmzC&limit=9";
 
@@ -83,14 +86,81 @@
             }).then(function(response) {
                 console.log(response.data)
                 response.data.forEach(element => {
-                    $("#gifArea").prepend("<div class='letter'><img src='" + element.images.fixed_width.url + "'>" + "</div><div></div>");
+                    $("#gifArea").prepend("<div class='letter'><img id='gif' src='" + element.images.fixed_width_still.url + "' data-state='still' data-still='" + element.images.fixed_width_still.url + "' data-active='" + element.images.fixed_width.url + "' >" + "</div><div></div>");
                 });
 
             });
 
+
+            gifList.push(searchTerm);
+
+            renderButtons();
+
             $("#searchTerm").val("");
 
         });
+
+
+        
+        $(document).on('click', '#gif', function()
+{
+    var state = $(this).attr("data-state");
+      // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+      // Then, set the image's data-state to animate
+      // Else set src to the data-still value
+      if (state === "still") {
+        $(this).attr("src", $(this).attr("data-active"));
+        $(this).attr("data-state", "animate");
+      } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+
+});
+
+//alerts when button clicked
+$(document).on('click', '.gif', function()
+{
+    alert( "Handler for .click() called." );
+    var gifName =     $(this).attr("data-name");
+
+            $("#searchTerm").val(gifName);
+
+});
+
+function renderButtons() {
+  $("#buttons-view").empty();
+
+  for (var i = 0; i < gifList.length; i++) {
+
+    var a = $("<button>");
+ 
+    a.addClass("gif");
+  
+    a.attr("data-name", gifList[i]);
+
+    a.text(gifList[i]);
+
+    $("#buttons-view").append(a);
+  }
+}
+
+// Calling the renderButtons function to display the intial buttons
+// renderButtons();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </script>
 </body>
 
