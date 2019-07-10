@@ -17,7 +17,6 @@
     <link href="https://fonts.googleapis.com/css?family=Karla|Montserrat|Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/styles/styles2.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
 </head>
 
 <body>
@@ -26,10 +25,13 @@
     </div>
     <div class='main-wrapper'>
         <div class="button-wrapper"><br>
-            <form><input type="text" class="gif-input" value="Enter GIF Here" id="searchTerm" onfocus="this.value = ''"></input><br><input class="button1" type="submit" value="Get some GIFs!" id="searchButton"></input>
+            <form><input type="text" class="gif-input" value="Enter GIF Here" id="searchTerm"
+                    onfocus="this.value = ''"></input><br><input class="button1" type="submit" value="Get some GIFs!"
+                    id="searchButton"></input>
             </form>
             <br>
             <div id="buttons-view"></div>
+            <div id="clear-buttons"></div>
         </div>
         <div class='gif-wrapper' id="gifArea">
             <!-- <div class='letter'>
@@ -60,107 +62,112 @@
 
     </div>
     <div class="footer-wrapper">
-        <p>Footer item </p>
+        <p id="footer-text">You gots to get some GIFs in ya!</p>
     </div>
 
     <script type="text/javascript">
+        var gifList = [];
 
-    var gifList = [];
-
-        $("#searchButton").on("click", function(event) {
-
-            // Preventing the submit button from trying to submit the form
-            // We're optionally using a form so the user may hit Enter to search instead of clicking the button
+        function gifSearch(event) {
             event.preventDefault();
 
             // Here we grab the text from the input box
             var searchTerm = $("#searchTerm").val();
 
-            console.log("search term");
+            // console.log("search term");
 
             var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=dc6zaTOxFJmzC&limit=9";
 
             $.ajax({
                 url: queryURL,
                 method: "GET"
-            }).then(function(response) {
-                console.log(response.data)
+            }).then(function (response) {
+                // console.log(response.data);
                 response.data.forEach(element => {
-                    $("#gifArea").prepend("<div class='letter'><img id='gif' src='" + element.images.fixed_width_still.url + "' data-state='still' data-still='" + element.images.fixed_width_still.url + "' data-active='" + element.images.fixed_width.url + "' >" + "</div><div></div>");
+                    $("#gifArea").prepend("<div class='gifContainer'><img id='gif' src='" + element
+                        .images.fixed_width_still.url + "' data-state='still' data-still='" +
+                        element.images.fixed_width_still.url + "' data-active='" + element.images
+                        .fixed_width.url + "' >" + "</div>");
                 });
 
             });
-
-
+            // console.log(gifList);
             gifList.push(searchTerm);
+            // console.log(gifList);
 
+            $("#footer-text").text("Now don't that make you feel betta!?");
+        }
+
+
+        $("#searchButton").on("click", function () {
+            gifSearch(event);
             renderButtons();
-
+            renderResetBtn();
             $("#searchTerm").val("");
-
         });
 
+        $(document).on('click', '#gif', function () {
+            var state = $(this).attr("data-state");
+            // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+            // Then, set the image's data-state to animate
+            // Else set src to the data-still value
+            if (state === "still") {
+                $(this).attr("src", $(this).attr("data-active"));
+                $(this).attr("data-state", "animate");
+            } else {
+                $(this).attr("src", $(this).attr("data-still"));
+                $(this).attr("data-state", "still");
+            }
+        });
 
-        
-        $(document).on('click', '#gif', function()
-{
-    var state = $(this).attr("data-state");
-      // If the clicked image's state is still, update its src attribute to what its data-animate value is.
-      // Then, set the image's data-state to animate
-      // Else set src to the data-still value
-      if (state === "still") {
-        $(this).attr("src", $(this).attr("data-active"));
-        $(this).attr("data-state", "animate");
-      } else {
-        $(this).attr("src", $(this).attr("data-still"));
-        $(this).attr("data-state", "still");
-      }
-
-});
-
-//alerts when button clicked
-$(document).on('click', '.gif', function()
-{
-    alert( "Handler for .click() called." );
-    var gifName =     $(this).attr("data-name");
-
+        // this will register the attribute of the gif
+        $(document).on('click', '.gifBtn', function () {
+            alert("Handler for .click() called.");
+            var gifName = $(this).attr("data-name");
             $("#searchTerm").val(gifName);
+            $("#gifArea").empty();
 
-});
+            for (var i = 0; i < gifList.length; i++) {
+                var index = gifList.indexOf(gifName);
+                console.log(index);
+                if (index !== -1) {
+                    gifList.splice(index, 1);
+                    console.log("if function ran removed " + index);
+                }
+                console.log(gifList[i]);
+            }
+            gifSearch(event);
 
-function renderButtons() {
-  $("#buttons-view").empty();
+            // NEED TO FIND A WAY TO REMOVE DUPLICATE BUTTONS FROM GIF LIST USING THIS ET
+            
+        });
 
-  for (var i = 0; i < gifList.length; i++) {
+        // this will empty the gifList and reset the buttons list
+        $(document).on('click', '#resetBtn', function () {
+            gifList = [];
+            $("#buttons-view").empty();
+        });
 
-    var a = $("<button>");
- 
-    a.addClass("gif");
-  
-    a.attr("data-name", gifList[i]);
+        function renderButtons() {
+            $("#buttons-view").empty();
+            $("#gifArea").empty();
+            for (var i = 0; i < gifList.length; i++) {
+                var a = $("<button>");
+                a.addClass("button1 gifBtn");
+                a.attr("data-name", gifList[i]);
+                a.text(gifList[i]);
+                $("#buttons-view").append(a);
+            }
+        }
 
-    a.text(gifList[i]);
-
-    $("#buttons-view").append(a);
-  }
-}
-
-// Calling the renderButtons function to display the intial buttons
-// renderButtons();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        function renderResetBtn() {
+            $("#clear-buttons").empty();
+            var reset = $("<button>");
+            reset.addClass("button1 resetBtn");
+            reset.attr("id", "resetBtn");
+            reset.text("Clear List");
+            $("#clear-buttons").append(reset);
+        }
     </script>
 </body>
 
