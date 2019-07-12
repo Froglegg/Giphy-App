@@ -17,6 +17,7 @@
     <link href="https://fonts.googleapis.com/css?family=Karla|Montserrat|Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/styles/styles2.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="assets/scripts/api.js" async defer></script>
 </head>
 
 <body>
@@ -34,141 +35,12 @@
             <div id="clear-buttons"></div>
         </div>
         <div class='gif-wrapper' id="gifArea">
-            <!-- <div class='letter'>
-                A
-            </div>
-            <div class='letter'>
-                B
-            </div>
-            <div class='letter'>
-                C
-            </div>
-            <div class='letter'>
-                D
-            </div>
-            <div class='letter'>
-                A
-            </div>
-            <div class='letter'>
-                B
-            </div>
-            <div class='letter'>
-                C
-            </div>
-            <div class='letter'>
-                D
-            </div> -->
         </div>
 
     </div>
     <div class="footer-wrapper">
         <p id="footer-text">You gots to get some GIFs in ya!</p>
     </div>
-
-    <script type="text/javascript">
-        var gifList = [];
-
-        function gifSearch(event) {
-            event.preventDefault();
-
-            // Here we grab the text from the input box
-            var searchTerm = $("#searchTerm").val();
-
-            // console.log("search term");
-
-            var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=dc6zaTOxFJmzC&limit=9";
-
-            $.ajax({
-                url: queryURL,
-                method: "GET"
-            }).then(function (response) {
-                // console.log(response.data);
-                response.data.forEach(element => {
-                    $("#gifArea").prepend("<div class='gifContainer'><img id='gif' src='" + element
-                        .images.fixed_width_still.url + "' data-state='still' data-still='" +
-                        element.images.fixed_width_still.url + "' data-active='" + element.images
-                        .fixed_width.url + "' >" + "</div>");
-                });
-
-            });
-            // console.log(gifList);
-            gifList.push(searchTerm);
-            // console.log(gifList);
-
-            $("#footer-text").text("Now don't that make you feel betta!?");
-        }
-
-
-        $("#searchButton").on("click", function () {
-            gifSearch(event);
-            renderButtons();
-            renderResetBtn();
-            $("#searchTerm").val("");
-        });
-
-        $(document).on('click', '#gif', function () {
-            var state = $(this).attr("data-state");
-            // If the clicked image's state is still, update its src attribute to what its data-animate value is.
-            // Then, set the image's data-state to animate
-            // Else set src to the data-still value
-            if (state === "still") {
-                $(this).attr("src", $(this).attr("data-active"));
-                $(this).attr("data-state", "animate");
-            } else {
-                $(this).attr("src", $(this).attr("data-still"));
-                $(this).attr("data-state", "still");
-            }
-        });
-
-        // this will register the attribute of the gif
-        $(document).on('click', '.gifBtn', function () {
-            alert("Handler for .click() called.");
-            var gifName = $(this).attr("data-name");
-            $("#searchTerm").val(gifName);
-            $("#gifArea").empty();
-
-            for (var i = 0; i < gifList.length; i++) {
-                var index = gifList.indexOf(gifName);
-                console.log(index);
-                if (index !== -1) {
-                    gifList.splice(index, 1);
-                    console.log("if function ran removed " + index);
-                }
-                console.log(gifList[i]);
-            }
-            gifSearch(event);
-
-            // NEED TO FIND A WAY TO REMOVE DUPLICATE BUTTONS FROM GIF LIST USING THIS ET
-            
-        });
-
-        // this will empty the gifList and reset the buttons list
-        $(document).on('click', '#resetBtn', function () {
-            gifList = [];
-            $("#buttons-view").empty();
-        });
-
-        function renderButtons() {
-            $("#buttons-view").empty();
-            $("#gifArea").empty();
-            for (var i = 0; i < gifList.length; i++) {
-                var a = $("<button>");
-                a.addClass("button1 gifBtn");
-                a.attr("data-name", gifList[i]);
-                a.text(gifList[i]);
-                $("#buttons-view").append(a);
-            }
-        }
-
-        function renderResetBtn() {
-            $("#clear-buttons").empty();
-            var reset = $("<button>");
-            reset.addClass("button1 resetBtn");
-            reset.attr("id", "resetBtn");
-            reset.text("Clear List");
-            $("#clear-buttons").append(reset);
-        }
-    </script>
 </body>
 
 </html>
