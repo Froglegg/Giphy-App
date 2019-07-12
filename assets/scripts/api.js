@@ -4,7 +4,7 @@
             event.preventDefault();
             // Here we grab the text from the input box
             var searchTerm = $("#searchTerm").val();
-            var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=dc6zaTOxFJmzC&limit=9";
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=dc6zaTOxFJmzC&limit=9";
 
             $.ajax({
                 url: queryURL,
